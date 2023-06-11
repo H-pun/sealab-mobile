@@ -6,7 +6,7 @@ import { CommonActions } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {
-    Login, ListGroup, ScoreInput
+    Login, ListGroup, ScoreInput, ScoreResult, ScoreDetail
 } from '../pages'
 
 import {
@@ -19,6 +19,7 @@ const Tab = createBottomTabNavigator();
 import { BottomNavigation, Text, useTheme } from 'react-native-paper';
 
 function Home() {
+    const { colors } = useTheme();
     return (
         <Tab.Navigator
             screenOptions={{
@@ -28,6 +29,8 @@ function Home() {
                 <BottomNavigation.Bar
                     navigationState={state}
                     safeAreaInsets={insets}
+                    activeColor={colors.primary}
+                    style={{ backgroundColor: 'white' }}
                     onTabPress={({ route, preventDefault }) => {
                         const event = navigation.emit({
                             type: 'tabPress',
@@ -66,22 +69,22 @@ function Home() {
             )}
         >
             <Tab.Screen
-                name="ListGroup"
+                name="List Group"
                 component={ListGroup}
                 options={{
-                    tabBarLabel: 'List Group',
+                    tabBarLabel: 'Input',
                     tabBarIcon: ({ color, size }) => {
-                        return <Icon name="group" size={size} color={color} />;
+                        return <Icon name="vcard" size={size} color={color} />;
                     },
                 }}
             />
             <Tab.Screen
-                name="Homes"
-                component={HomeScreen}
+                name="Result"
+                component={ScoreResult}
                 options={{
-                    tabBarLabel: 'Home',
+                    tabBarLabel: 'Result',
                     tabBarIcon: ({ color, size }) => {
-                        return <Icon name="home" size={size} color={color} />;
+                        return <Icon name="bar-chart" size={size} color={color} />;
                     },
                 }}
             />
@@ -89,21 +92,13 @@ function Home() {
                 name="Settings"
                 component={SettingsScreen}
                 options={{
-                    tabBarLabel: 'Settings',
+                    tabBarLabel: 'BAP',
                     tabBarIcon: ({ color, size }) => {
-                        return <Icon name="cog" size={size} color={color} />;
+                        return <Icon name="clipboard" size={size} color={color} />;
                     },
                 }}
             />
         </Tab.Navigator>
-    );
-}
-
-function HomeScreen() {
-    return (
-        <View style={styles.container}>
-            <Text variant="headlineMedium">Home!</Text>
-        </View>
     );
 }
 
@@ -128,8 +123,8 @@ function Router() {
         <Stack.Navigator initialRouteName='Login'>
             <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-            <Stack.Screen name="ScoreInput" component={ScoreInput} />
-            {/* <Stack.Screen name="MainApp" component={MainApp} options={{ headerShown: false }} /> */}
+            <Stack.Screen name="Score Input" component={ScoreInput} />
+            <Stack.Screen name="Score Detail" component={ScoreDetail} />
         </ Stack.Navigator>
     );
 }

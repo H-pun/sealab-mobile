@@ -10,7 +10,7 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: '#24A9E1',
-    primaryContainer: 'black',
+    // primaryContainer: 'black',
     secondaryContainer: "#C9EBF5",
   },
 };

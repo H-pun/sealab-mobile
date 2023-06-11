@@ -25,7 +25,7 @@ import {
     Alert,
 } from 'react-native';
 
-const InputScore = ({ route, navigation }) => {
+const ScoreInput = ({ route, navigation }) => {
     const [module, setModule] = useState('');
     const [date, setDate] = useState(new Date());
     const [isLoading, setIsLoading] = useState(false);
@@ -36,13 +36,13 @@ const InputScore = ({ route, navigation }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const { day, shift, group } = route.params;
-    const scoreField = ['tp', 'ta', 'd', 'i1', 'i2'];
+    const scoreField = ['TP', 'TA', 'D', 'I1', 'I2'];
 
     const updateScore = (propertyName, value) => {
         setScores(prevScores => {
             const updatedScores = [...prevScores];
             updatedScores[currentIndex][propertyName] = value;
-            updatedScores[currentIndex].status = updatedScores[currentIndex].d != 0;
+            updatedScores[currentIndex].status = updatedScores[currentIndex].D != 0;
             return updatedScores;
         });
     };
@@ -52,7 +52,7 @@ const InputScore = ({ route, navigation }) => {
         var dateNow = moment.utc(date).tz('Asia/Jakarta').format('YYYY-MM-DD');
         console.log({ day, shift, group, module, date: dateNow, scores });
 
-        await axios.post('/api/Seelabs/score/input', { day, shift, group, module, date: dateNow, scores })
+        await axios.post('/api/seelabs/score', { day, shift, group, module, date: dateNow, scores })
             .then(({ data }) => {
                 console.log(data);
                 setDialogVisible(true);
@@ -66,7 +66,7 @@ const InputScore = ({ route, navigation }) => {
 
     const handleGetSheet = async () => {
         setIsLoading(true);
-        await axios.post('/api/Seelabs/score/list-group', { day, shift, group })
+        await axios.post('/api/seelabs/score/list-group', { day, shift, group })
             .then(({ data }) => {
                 var temp = [];
                 data.data.forEach((item) => {
@@ -74,11 +74,11 @@ const InputScore = ({ route, navigation }) => {
                         name: item.name,
                         uid: item.uid,
                         status: false,
-                        tp: 0,
-                        ta: 0,
-                        i1: 0,
-                        i2: 0,
-                        d: 0
+                        TP: 0,
+                        TA: 0,
+                        I1: 0,
+                        I2: 0,
+                        D: 0
                     })
                 });
                 setScores(temp);
@@ -98,7 +98,7 @@ const InputScore = ({ route, navigation }) => {
     }, [])
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
             <Portal>
                 <Dialog visible={dialogVisible} onDismiss={() => { setDialogVisible(false) }}>
                     <Dialog.Title>Alert</Dialog.Title>
@@ -148,16 +148,16 @@ const InputScore = ({ route, navigation }) => {
                             </DataTable.Header>
 
                             <DataTable.Row>
-                                <DataTable.Cell style={styles.title}>{item.tp}</DataTable.Cell>
-                                <DataTable.Cell style={styles.title}>{item.ta}</DataTable.Cell>
-                                <DataTable.Cell style={styles.title}>{item.d}</DataTable.Cell>
-                                <DataTable.Cell style={styles.title}>{item.i1}</DataTable.Cell>
-                                <DataTable.Cell style={styles.title}>{item.i2}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.TP}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.TA}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.D}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.I1}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.I2}</DataTable.Cell>
                             </DataTable.Row>
                         </DataTable>
                     </Card.Content>
                     <Card.Actions>
-                        <Button icon="pencil" mode="contained" style={{ margin: 5 }} onPress={() => {
+                        <Button icon="pencil" mode="contained" style={{ margin: 5 }} loading={isLoading} onPress={() => {
                             setModalVisible(true);
                             setCurrentIndex(index);
                         }}>
@@ -207,11 +207,12 @@ const InputScore = ({ route, navigation }) => {
     )
 };
 
-export default InputScore;
+export default ScoreInput;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
+        justifyContent: 'center'
     },
     modalContainer: {
         backgroundColor: 'white',

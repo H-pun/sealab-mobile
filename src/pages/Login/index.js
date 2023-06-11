@@ -19,7 +19,7 @@ const Login = ({ navigation }) => {
 
     const handleLogin = async () => {
         setIsLoading(true);
-        await axios.post('/api/User/login', { username, password })
+        await axios.post('/api/user/login', { username, password })
             .then(async ({ data }) => {
                 await AsyncStorage.setItem('user', JSON.stringify(data))
                 await AsyncStorage.setItem('app_token', data.data.appToken)
