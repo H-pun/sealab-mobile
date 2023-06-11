@@ -1,8 +1,8 @@
-import axios from 'axios';
+// import axios from 'axios';
+import axios from '../../utils/api';
 import React, { useState } from 'react';
 import { Button, TextInput, Text } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import env from '../../../env';
 
 import {
     Image,
@@ -19,18 +19,16 @@ const Login = ({ navigation }) => {
 
     const handleLogin = async () => {
         setIsLoading(true);
-        try {
-            await axios.post(env.API_URL + '/api/User/login', { username, password })
-                .then(async ({ data }) => {
-                    await AsyncStorage.setItem('user', JSON.stringify(data))
-                    await AsyncStorage.setItem('app_token', data.data.appToken)
-                    navigation.navigate('Home')
-                });
-
-        } catch (error) {
-            console.log(error)
-            Alert.alert('Login Failed', 'Invalid username or password');
-        }
+        await axios.post('/api/User/login', { username, password })
+            .then(async ({ data }) => {
+                await AsyncStorage.setItem('user', JSON.stringify(data))
+                await AsyncStorage.setItem('app_token', data.data.appToken)
+                navigation.navigate('Home')
+            })
+            .catch(({ response }) => {
+                console.log(response.data)
+                Alert.alert("Error", response.data.message)
+            });
         setIsLoading(false)
     };
 
