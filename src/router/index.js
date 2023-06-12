@@ -6,17 +6,13 @@ import { CommonActions } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {
-    Login, ListGroup, ScoreInput, ScoreResult, ScoreDetail
+    Login, ListGroup, ScoreInput, ScoreResult, ScoreDetail, BAP, ScoreEdit
 } from '../pages'
-
-import {
-    View, StyleSheet
-} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-import { BottomNavigation, Text, useTheme } from 'react-native-paper';
+import { BottomNavigation, useTheme } from 'react-native-paper';
 
 function Home() {
     const { colors } = useTheme();
@@ -89,8 +85,8 @@ function Home() {
                 }}
             />
             <Tab.Screen
-                name="Settings"
-                component={SettingsScreen}
+                name="BAP"
+                component={BAP}
                 options={{
                     tabBarLabel: 'BAP',
                     tabBarIcon: ({ color, size }) => {
@@ -102,22 +98,6 @@ function Home() {
     );
 }
 
-function SettingsScreen() {
-    return (
-        <View style={styles.container}>
-            <Text variant="headlineMedium">Settings!</Text>
-        </View>
-    );
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
-
 function Router() {
     return (
         <Stack.Navigator initialRouteName='Login'>
@@ -125,6 +105,7 @@ function Router() {
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="Score Input" component={ScoreInput} />
             <Stack.Screen name="Score Detail" component={ScoreDetail} />
+            <Stack.Screen name="Score Edit" component={ScoreEdit} />
         </ Stack.Navigator>
     );
 }

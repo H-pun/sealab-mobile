@@ -1,8 +1,6 @@
 import axios from '../../utils/api';
 import moment from 'moment-timezone';
 import React, { useState, useEffect } from 'react';
-import { DatePickerInput } from 'react-native-paper-dates';
-
 
 import {
     ActivityIndicator,
@@ -25,9 +23,7 @@ import {
     Alert,
 } from 'react-native';
 
-const ScoreInput = ({ route, navigation }) => {
-    const [module, setModule] = useState('');
-    const [date, setDate] = useState(new Date());
+const ScoreEdit = ({ route, navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [btnLoading, setBtnLoading] = useState(false);
     const [modalVisible, setModalVisible] = React.useState(false);
@@ -35,8 +31,8 @@ const ScoreInput = ({ route, navigation }) => {
     const [scores, setScores] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const { day, shift, group } = route.params;
-    const scoreField = ['TP', 'TA', 'D', 'I1', 'I2'];
+    const { module, group } = route.params;
+    const scoreField = ['tp', 'ta', 'd', 'i1', 'i2'];
 
     const updateScore = (propertyName, value) => {
         setScores(prevScores => {
@@ -47,12 +43,10 @@ const ScoreInput = ({ route, navigation }) => {
         });
     };
 
-    const handleInputScore = async () => {
+    const handleUpdateScore = async () => {
         setBtnLoading(true);
-        var dateNow = moment.utc(date).tz('Asia/Jakarta').format('YYYY-MM-DD');
-        console.log({ day, shift, group, module, date: dateNow, scores });
 
-        await axios.post('/api/seelabs/score', { day, shift, group, module, date: dateNow, scores })
+        await axios.put('/api/seelabs/score', { group, module, scores })
             .then(({ data }) => {
                 console.log(data);
                 setDialogVisible(true);
@@ -66,22 +60,9 @@ const ScoreInput = ({ route, navigation }) => {
 
     const handleGetSheet = async () => {
         setIsLoading(true);
-        await axios.post('/api/seelabs/score/list-group', { day, shift, group })
+        await axios.post('/api/seelabs/score/detail', { module, group })
             .then(({ data }) => {
-                var temp = [];
-                data.data.forEach((item) => {
-                    temp.push({
-                        name: item.name,
-                        uid: item.uid,
-                        status: false,
-                        TP: 0,
-                        TA: 0,
-                        I1: 0,
-                        I2: 0,
-                        D: 0
-                    })
-                });
-                setScores(temp);
+                setScores(data.data.scores);
             })
             .catch(({ response }) => {
                 console.log(response.data)
@@ -119,17 +100,17 @@ const ScoreInput = ({ route, navigation }) => {
                                     key={index}
                                     style={{ marginBottom: 10 }}
                                     mode='outlined'
-                                    label={item}
+                                    label={item?.toUpperCase()}
                                     onChangeText={value => updateScore(item, value)}
                                     inputMode='numeric'
-                                    value={scores[currentIndex]?.[item] != 0 ? scores[currentIndex]?.[item].toString() : ''}
+                                    value={scores[currentIndex]?.[item] != 0 ? scores[currentIndex]?.[item]?.toString() : ''}
                                 />
                             ))
                         }
                     </View>
                 </Modal>
             </Portal>
-            {scores && scores.map((item, index) => (
+            {scores.map((item, index) => (
                 <Card style={{ margin: 20 }} mode='outlined' key={item.uid}>
                     <Card.Title
                         title={item.name}
@@ -148,11 +129,11 @@ const ScoreInput = ({ route, navigation }) => {
                             </DataTable.Header>
 
                             <DataTable.Row>
-                                <DataTable.Cell style={styles.title}>{item.TP}</DataTable.Cell>
-                                <DataTable.Cell style={styles.title}>{item.TA}</DataTable.Cell>
-                                <DataTable.Cell style={styles.title}>{item.D}</DataTable.Cell>
-                                <DataTable.Cell style={styles.title}>{item.I1}</DataTable.Cell>
-                                <DataTable.Cell style={styles.title}>{item.I2}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.tp}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.ta}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.d}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.i1}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.i2}</DataTable.Cell>
                             </DataTable.Row>
                         </DataTable>
                     </Card.Content>
@@ -161,37 +142,19 @@ const ScoreInput = ({ route, navigation }) => {
                             setModalVisible(true);
                             setCurrentIndex(index);
                         }}>
-                            Input
+                            Edit
                         </Button>
                     </Card.Actions>
                 </Card>
             ))}
             {scores.length > 0 && <View style={styles.formContainer}>
-                <DatePickerInput
-                    locale='en'
-                    label='Date'
-                    style={{ marginBottom: 10 }}
-                    value={date}
-                    disabled={isLoading}
-                    onChange={setDate}
-                    inputMode='start'
-                    mode='outlined'
-                />
-                <TextInput
-                    style={{ marginBottom: 20 }}
-                    mode='outlined'
-                    label='Module'
-                    disabled={isLoading}
-                    onChangeText={setModule}
-                    inputMode='numeric'
-                    value={module} />
                 <Button
                     style={{ marginBottom: 40 }}
                     mode="contained"
-                    onPress={handleInputScore}
+                    onPress={handleUpdateScore}
                     disabled={btnLoading || isLoading}
                     loading={btnLoading}>
-                    Submit
+                    Save
                 </Button>
             </View>}
             <ActivityIndicator animating={isLoading} />
@@ -199,7 +162,7 @@ const ScoreInput = ({ route, navigation }) => {
     )
 };
 
-export default ScoreInput;
+export default ScoreEdit;
 
 const styles = StyleSheet.create({
     container: {

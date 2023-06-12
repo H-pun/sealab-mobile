@@ -1,20 +1,12 @@
 import axios from '../../utils/api';
 import moment from 'moment-timezone';
 import React, { useState, useEffect } from 'react';
-import { DatePickerInput } from 'react-native-paper-dates';
-
 
 import {
     ActivityIndicator,
-    Button,
     Divider,
     Badge,
-    Text,
-    TextInput,
     DataTable,
-    Modal,
-    Dialog,
-    Portal,
     Card
 } from 'react-native-paper';
 
@@ -34,7 +26,7 @@ const ScoreDetail = ({ route, navigation }) => {
 
     const handleGetScore = async () => {
         setIsLoading(true);
-        await axios.post('/api/seelabs/score/detail', { module, group })
+        await axios.get('/api/seelabs/score', { params: { module, group } })
             .then(({ data }) => {
                 setShift(data.data.shift);
                 setData(data.data.scores);
@@ -102,7 +94,7 @@ export default ScoreDetail;
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     modalContainer: {
         backgroundColor: 'white',

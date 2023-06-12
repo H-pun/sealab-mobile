@@ -4,6 +4,8 @@ import ListGroup from './ListGroup'
 import ScoreInput from './ScoreInput'
 import ScoreResult from './ScoreResult'
 import ScoreDetail from './ScoreDetail'
+import ScoreEdit from './ScoreEdit'
+import BAP from './BAP'
 
 export {
     Login,
@@ -11,5 +13,7 @@ export {
     ListGroup,
     ScoreInput,
     ScoreResult,
-    ScoreDetail
+    ScoreDetail,
+    ScoreEdit,
+    BAP
 }

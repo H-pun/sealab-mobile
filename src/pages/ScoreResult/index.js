@@ -124,7 +124,11 @@ const ScoreResult = ({ navigation }) => {
                         </List.Section>
                     </Card.Content>
                     <Card.Actions style={{ marginBottom: 10, marginEnd: 10 }}>
-                        <Button>Edit</Button>
+                        <Button
+                            disabled={isLoading}
+                            onPress={() => {
+                                navigation.navigate('Score Edit', { module, group: item.id_group });
+                            }}>Edit</Button>
                         <Button
                             disabled={isLoading}
                             onPress={() => {
