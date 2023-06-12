@@ -40,10 +40,6 @@ const ListGroup = ({ navigation }) => {
         setIsLoading(false)
     };
 
-    useEffect(() => {
-
-    })
-
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.contentContainer}>
@@ -155,13 +151,4 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 20
     },
-    title: {
-        width: '80%',
-        marginBottom: 18,
-        fontWeight: 'bold'
-    },
-    subTitle: {
-        width: '80%',
-        marginBottom: 10,
-    }
 })

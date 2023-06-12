@@ -26,7 +26,6 @@ const BAP = ({ navigation }) => {
         setData(null);
         await axios.get('/api/seelabs/bap', { params: { date: moment.utc(date).tz('Asia/Jakarta').format('YYYY-MM-DD') } })
             .then(async ({ data }) => {
-                console.log(data.data)
                 setData(data.data);
             })
             .catch(({ response }) => {

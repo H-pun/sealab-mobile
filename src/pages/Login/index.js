@@ -1,4 +1,3 @@
-// import axios from 'axios';
 import axios from '../../utils/api';
 import React, { useState } from 'react';
 import { Button, TextInput, Text } from 'react-native-paper';

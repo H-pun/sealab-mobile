@@ -1,5 +1,4 @@
 import axios from '../../utils/api';
-import moment from 'moment-timezone';
 import React, { useState, useEffect } from 'react';
 
 import {
@@ -20,7 +19,6 @@ import {
 const ScoreDetail = ({ route, navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
-    const [shift, setShift] = useState([]);
 
     const { module, group } = route.params;
 
@@ -28,7 +26,6 @@ const ScoreDetail = ({ route, navigation }) => {
         setIsLoading(true);
         await axios.get('/api/seelabs/score', { params: { module, group } })
             .then(({ data }) => {
-                setShift(data.data.shift);
                 setData(data.data.scores);
             })
             .catch(({ response }) => {
@@ -96,23 +93,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'center'
     },
-    modalContainer: {
-        backgroundColor: 'white',
-        padding: 20,
-        paddingTop: 30,
-        paddingBottom: 30
-    },
-    formContainer: {
-        width: '80%',
-        alignSelf: 'center',
-        marginTop: 15,
-    },
     title: {
         justifyContent: 'center',
-    },
-    subTitle: {
-        width: '80%',
-        marginBottom: 10,
-        marginTop: 10,
-    },
+    }
 })

@@ -1,5 +1,4 @@
 import axios from '../../utils/api';
-import moment from 'moment-timezone';
 import React, { useState, useEffect } from 'react';
 
 import {
@@ -11,7 +10,6 @@ import {
     TextInput,
     DataTable,
     Modal,
-    Dialog,
     Portal,
     Card
 } from 'react-native-paper';
@@ -27,7 +25,6 @@ const ScoreEdit = ({ route, navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [btnLoading, setBtnLoading] = useState(false);
     const [modalVisible, setModalVisible] = React.useState(false);
-    const [dialogVisible, setDialogVisible] = React.useState(false);
     const [scores, setScores] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -45,11 +42,9 @@ const ScoreEdit = ({ route, navigation }) => {
 
     const handleUpdateScore = async () => {
         setBtnLoading(true);
-
         await axios.put('/api/seelabs/score', { group, module, scores })
             .then(({ data }) => {
-                console.log(data);
-                setDialogVisible(true);
+                Alert.alert("Success", "Update Successfull!")
             })
             .catch(({ response }) => {
                 console.log(response.data)
@@ -81,15 +76,6 @@ const ScoreEdit = ({ route, navigation }) => {
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Portal>
-                <Dialog visible={dialogVisible} onDismiss={() => { setDialogVisible(false) }}>
-                    <Dialog.Title>Alert</Dialog.Title>
-                    <Dialog.Content>
-                        <Text variant="bodyMedium">Input Success</Text>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={() => { setDialogVisible(false) }}>Done</Button>
-                    </Dialog.Actions>
-                </Dialog>
                 <Modal visible={modalVisible} onDismiss={() => setModalVisible(false)} contentContainerStyle={styles.modalContainer}>
                     <View style={styles.formContainer} enabled>
                         <Text variant='titleLarge' numberOfLines={1} style={styles.title}>{scores[currentIndex]?.name}</Text>

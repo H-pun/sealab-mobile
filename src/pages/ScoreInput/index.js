@@ -31,18 +31,17 @@ const ScoreInput = ({ route, navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [btnLoading, setBtnLoading] = useState(false);
     const [modalVisible, setModalVisible] = React.useState(false);
-    const [dialogVisible, setDialogVisible] = React.useState(false);
     const [scores, setScores] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const { day, shift, group } = route.params;
-    const scoreField = ['TP', 'TA', 'D', 'I1', 'I2'];
+    const scoreField = ['tp', 'ta', 'd', 'i1', 'i2'];
 
     const updateScore = (propertyName, value) => {
         setScores(prevScores => {
             const updatedScores = [...prevScores];
             updatedScores[currentIndex][propertyName] = value;
-            updatedScores[currentIndex].status = updatedScores[currentIndex].D != 0;
+            updatedScores[currentIndex].status = updatedScores[currentIndex].d != 0;
             return updatedScores;
         });
     };
@@ -54,8 +53,7 @@ const ScoreInput = ({ route, navigation }) => {
 
         await axios.post('/api/seelabs/score', { day, shift, group, module, date: dateNow, scores })
             .then(({ data }) => {
-                console.log(data);
-                setDialogVisible(true);
+                Alert.alert("Success", "Input successfull!")
             })
             .catch(({ response }) => {
                 console.log(response.data)
@@ -74,11 +72,11 @@ const ScoreInput = ({ route, navigation }) => {
                         name: item.name,
                         uid: item.uid,
                         status: false,
-                        TP: 0,
-                        TA: 0,
-                        I1: 0,
-                        I2: 0,
-                        D: 0
+                        tp: 0,
+                        ta: 0,
+                        i1: 0,
+                        i2: 0,
+                        d: 0
                     })
                 });
                 setScores(temp);
@@ -100,15 +98,6 @@ const ScoreInput = ({ route, navigation }) => {
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Portal>
-                <Dialog visible={dialogVisible} onDismiss={() => { setDialogVisible(false) }}>
-                    <Dialog.Title>Alert</Dialog.Title>
-                    <Dialog.Content>
-                        <Text variant="bodyMedium">Input Success</Text>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={() => { setDialogVisible(false) }}>Done</Button>
-                    </Dialog.Actions>
-                </Dialog>
                 <Modal visible={modalVisible} onDismiss={() => setModalVisible(false)} contentContainerStyle={styles.modalContainer}>
                     <View style={styles.formContainer} enabled>
                         <Text variant='titleLarge' numberOfLines={1} style={styles.title}>{scores[currentIndex]?.name}</Text>
@@ -119,7 +108,7 @@ const ScoreInput = ({ route, navigation }) => {
                                     key={index}
                                     style={{ marginBottom: 10 }}
                                     mode='outlined'
-                                    label={item}
+                                    label={item?.toUpperCase()}
                                     onChangeText={value => updateScore(item, value)}
                                     inputMode='numeric'
                                     value={scores[currentIndex]?.[item] != 0 ? scores[currentIndex]?.[item].toString() : ''}
@@ -148,11 +137,11 @@ const ScoreInput = ({ route, navigation }) => {
                             </DataTable.Header>
 
                             <DataTable.Row>
-                                <DataTable.Cell style={styles.title}>{item.TP}</DataTable.Cell>
-                                <DataTable.Cell style={styles.title}>{item.TA}</DataTable.Cell>
-                                <DataTable.Cell style={styles.title}>{item.D}</DataTable.Cell>
-                                <DataTable.Cell style={styles.title}>{item.I1}</DataTable.Cell>
-                                <DataTable.Cell style={styles.title}>{item.I2}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.tp}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.ta}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.d}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.i1}</DataTable.Cell>
+                                <DataTable.Cell style={styles.title}>{item.i2}</DataTable.Cell>
                             </DataTable.Row>
                         </DataTable>
                     </Card.Content>

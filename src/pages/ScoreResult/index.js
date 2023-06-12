@@ -1,5 +1,5 @@
 import axios from '../../utils/api';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
     Button,
@@ -7,7 +7,6 @@ import {
     List,
     Divider,
     RadioButton,
-    TextInput,
     Text,
     Card,
     Portal,
@@ -68,8 +67,8 @@ const ScoreResult = ({ navigation }) => {
                         <Text variant="bodyMedium">Are you absolutely, positively sure you want to delete this? Once it's gone, it's gone forever! This item holds memories and sentimental value, like a rare unicorn sighting. Deleting it would be like erasing a masterpiece. If you're certain, click OK to bid farewell. If you're having second thoughts, click Cancel to keep this treasure safe!</Text>
                     </Dialog.Content>
                     <Dialog.Actions>
-                        <Button style={{ minWidth: 80 }} mode='outlined' disabled={isLoading} onPress={() => setVisible(false)}>Cancel</Button>
-                        <Button style={{ minWidth: 80 }} mode='contained' disabled={isLoading} loading={isLoading} onPress={handleDeleteScore}>Ok</Button>
+                        <Button style={{ minWidth: 80 }} mode='outlined' disabled={btnLoading} onPress={() => setVisible(false)}>Cancel</Button>
+                        <Button style={{ minWidth: 80 }} mode='contained' disabled={btnLoading} loading={btnLoading} onPress={handleDeleteScore}>Ok</Button>
                     </Dialog.Actions>
                 </Dialog>
             </Portal>
@@ -153,18 +152,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 15,
     },
-    selectContainer: {
-        width: '80%',
-        alignSelf: 'center',
-        flexDirection: 'row',
-        backgroundColor: 'yellow',
-        justifyContent: 'center',
-        height: 300
-    },
-    input: {
-        width: '80%',
-        alignSelf: 'center'
-    },
     button: {
         marginTop: 10,
         width: '60%',
@@ -176,9 +163,5 @@ const styles = StyleSheet.create({
     title: {
         marginBottom: 18,
         fontWeight: 'bold'
-    },
-    subTitle: {
-        width: '80%',
-        marginBottom: 10,
     }
 })
