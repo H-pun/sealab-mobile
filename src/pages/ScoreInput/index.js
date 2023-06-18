@@ -2,7 +2,7 @@ import axios from '../../utils/api';
 import moment from 'moment-timezone';
 import React, { useState, useEffect } from 'react';
 import { DatePickerInput } from 'react-native-paper-dates';
-
+import { DropDown } from '../../components';
 
 import {
     ActivityIndicator,
@@ -13,7 +13,6 @@ import {
     TextInput,
     DataTable,
     Modal,
-    Dialog,
     Portal,
     Card
 } from 'react-native-paper';
@@ -22,11 +21,11 @@ import {
     ScrollView,
     StyleSheet,
     View,
-    Alert,
+    Alert
 } from 'react-native';
 
 const ScoreInput = ({ route, navigation }) => {
-    const [module, setModule] = useState('');
+    const [module, setModule] = useState('1');
     const [date, setDate] = useState(new Date());
     const [isLoading, setIsLoading] = useState(false);
     const [btnLoading, setBtnLoading] = useState(false);
@@ -156,26 +155,53 @@ const ScoreInput = ({ route, navigation }) => {
                 </Card>
             ))}
             {scores.length > 0 && <View style={styles.formContainer}>
+
+                <DropDown
+                    style={{ width: '80%' }}
+                    contentStyle={{ height: 100 }}
+                    value={module}
+                    label='Module'
+                    loading={isLoading}
+                    onValueChange={setModule}
+                    list={[
+                        {
+                            value: 1,
+                            title: 'Module 1'
+                        },
+                        {
+                            value: 2,
+                            title: 'Module 2'
+                        },
+                        {
+                            value: 3,
+                            title: 'Module 3'
+                        },
+                        {
+                            value: 4,
+                            title: 'Module 4'
+                        },
+                        {
+                            value: 5,
+                            title: 'Module 5'
+                        },
+                        {
+                            value: 6,
+                            title: 'Module 6'
+                        },
+                    ]}
+                />
                 <DatePickerInput
                     locale='en'
                     label='Date'
-                    style={{ marginBottom: 10 }}
+                    style={{ marginVertical: 20 }}
                     value={date}
                     disabled={isLoading}
                     onChange={setDate}
                     inputMode='start'
                     mode='outlined'
                 />
-                <TextInput
-                    style={{ marginBottom: 20 }}
-                    mode='outlined'
-                    label='Module'
-                    disabled={isLoading}
-                    onChangeText={setModule}
-                    inputMode='numeric'
-                    value={module} />
                 <Button
-                    style={{ marginBottom: 40 }}
+                    style={{ marginBottom: 40, marginTop: 10 }}
                     mode="contained"
                     onPress={handleInputScore}
                     disabled={btnLoading || isLoading}
@@ -213,5 +239,5 @@ const styles = StyleSheet.create({
         width: '80%',
         marginBottom: 10,
         marginTop: 10,
-    },
+    }
 })

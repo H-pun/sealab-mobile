@@ -22,7 +22,7 @@ const Login = ({ navigation }) => {
             .then(async ({ data }) => {
                 await AsyncStorage.setItem('user', JSON.stringify(data))
                 await AsyncStorage.setItem('app_token', data.data.appToken)
-                navigation.navigate('Home')
+                navigation.replace('Home')
             })
             .catch(({ response }) => {
                 console.log(response.data)
