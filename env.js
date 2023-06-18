@@ -1,5 +1,5 @@
 const env = {
-    API_URL: 'https://479e-103-233-100-235.ngrok-free.app',
+    API_URL: 'https://api.sealab-telu.com',
 };
 
 export default env;
